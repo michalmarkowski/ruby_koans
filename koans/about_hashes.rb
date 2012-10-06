@@ -20,11 +20,23 @@ class AboutHashes < EdgeCase::Koan
     assert_equal nil, hash[:doesnt_exist]
   end
 
-  def test_accessing_hashes_with_fetch
-    hash = { :one => "uno" }
-    assert_equal "uno", hash.fetch(:one)
-    assert_raise(KeyError) do
-      hash.fetch(:doesnt_exist)
+  in_ruby_version("1.8") do
+    def test_accessing_hashes_with_fetch
+      hash = { :one => "uno" }
+      assert_equal "uno", hash.fetch(:one)
+      assert_raise(IndexError) do
+        hash.fetch(:doesnt_exist)
+      end
+    end
+  end
+
+  in_ruby_version("1.9") do
+    def test_accessing_hashes_with_fetch
+      hash = { :one => "uno" }
+      assert_equal "uno", hash.fetch(:one)
+      assert_raise(KeyError) do
+        hash.fetch(:doesnt_exist)
+      end
     end
 
     # THINK ABOUT IT:
